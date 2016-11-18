@@ -7,16 +7,9 @@ module.exports = {
     module: {
         loaders: [
             {
-                test: /\.js$/,
-                loader: 'babel',
-                include: './index.js',
-                exclude: 'node_modules',
-                query: {
-                    presets: [
-                        'latest',
-                        'react'
-                    ]
-                }
+                test: /\.jsx?$/,
+                loader: 'babel-loader',
+                exclude: '/node_modules/'
             },
             {
                 test: /\.css$/,

@@ -2,6 +2,6 @@ import React from 'react';
 const { render } = require('react-dom');
 
 render(
-    <div>Hi</div>,
+    <div>hi</div>,
     document.getElementById('anchor')
 );
