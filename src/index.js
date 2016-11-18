@@ -7,6 +7,8 @@ import thunk from 'redux-thunk';
 import VersionControl from './components/VersionControl';
 import versionControl from './reducers/versionControl';
 
+import './css/main.scss';
+
 const store = createStore(
     combineReducers({
         versionControl
@@ -16,7 +18,10 @@ const store = createStore(
 
 render(
     <Provider store={store}>
-        <VersionControl/>
+        <div>
+            <img className="banner" src="/src/images/banner.png"/>
+            <VersionControl/>
+        </div>
     </Provider>,
     document.getElementById('anchor')
 );

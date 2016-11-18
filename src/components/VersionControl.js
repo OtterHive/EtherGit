@@ -1,7 +1,8 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
-import { loadVersionControlContract as loadContract, getVersion } from '../actions/versionControl';
+import { loadVersionControlContract, getVersion } from '../actions/versionControl';
+import { loadEtherGitContract } from '../actions/etherGit';
 
 class VersionControl extends Component {
     constructor (props) {
@@ -44,14 +45,22 @@ class VersionControl extends Component {
     }
 }
 
+VersionControl.propTypes = {
+    loadContract: PropTypes.func,
+    getVersion: PropTypes.func,
+    version: PropTypes.string
+};
+
 const Container = connect(
     state => ({
         version: state.versionControl.version
     }),
     dispatch => ({
         loadContract () {
-            dispatch(loadContract(() => {
-                dispatch(getVersion());
+            dispatch(loadVersionControlContract(() => {
+                dispatch(getVersion(() => {
+                    dispatch(loadEtherGitContract());
+                }));
             }));
         },
         getVersion () {
