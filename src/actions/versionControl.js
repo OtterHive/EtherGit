@@ -1,10 +1,11 @@
 import web3 from '../web3';
 import VersionControlABI from '../../contracts/VersionControl.json';
+import { loadEtherGitContract } from './etherGit.js';
 
 export const LOAD_VERSION_CONTROL_CONTRACT = 'LOAD_VERSION_CONTROL_CONTRACT';
 export const RECEIVE_LOAD_VERSION_CONTROL_CONTRACT = 'RECEIVE_LOAD_VERSION_CONTROL_CONTRACT';
 
-export const loadVersionControlContract = () => {
+export const loadVersionControlContract = (cb = ()=>{}) => {
     return dispatch => {
         dispatch({
             type: LOAD_VERSION_CONTROL_CONTRACT
@@ -16,14 +17,14 @@ export const loadVersionControlContract = () => {
                 type: RECEIVE_LOAD_VERSION_CONTROL_CONTRACT,
                 contract
             });
-            dispatch(getVersion());
+            cb(contract);
         });
     };
 };
 
 export const GET_VERSION = 'GET_VERSION';
 
-export const getVersion = () => {
+export const getVersion = (cb = ()=>{}) => {
     return (dispatch, getState) => {
         console.log('getting');
         getState().versionControl.contract.getVersion.call((err, version) => {
@@ -32,6 +33,7 @@ export const getVersion = () => {
                 type: GET_VERSION,
                 version
             });
+            cb(version);
         });
     };
 };

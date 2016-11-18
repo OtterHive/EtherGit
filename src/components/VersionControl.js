@@ -50,7 +50,9 @@ const Container = connect(
     }),
     dispatch => ({
         loadContract () {
-            dispatch(loadContract());
+            dispatch(loadContract(() => {
+                dispatch(getVersion());
+            }));
         },
         getVersion () {
             dispatch(getVersion());
