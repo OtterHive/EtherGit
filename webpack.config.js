@@ -35,6 +35,10 @@ module.exports = {
                 query: {
                     limit: 8192
                 }
+            },
+            {
+                test: /\.json$/,
+                loader: 'json'
             }
         ]
     }
