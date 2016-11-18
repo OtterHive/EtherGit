@@ -7,14 +7,14 @@ module.exports = {
     module: {
         loaders: [
             {
-                test: /\.jsx?/,
-                loaders: [
-                    'babel'
-                ],
+                test: /\.js$/,
+                loader: 'babel',
                 include: './index.js',
+                exclude: 'node_modules',
                 query: {
                     presets: [
-                        'es2015'
+                        'latest',
+                        'react'
                     ]
                 }
             },
@@ -45,4 +45,4 @@ module.exports = {
             }
         ]
     }
-}
+};
