@@ -2,30 +2,27 @@ pragma solidity ^0.4.0;
 
 contract EtherGit {
     address public creator;
-    bool public killSwitchStatus;
+    address public proxy;
     mapping (bytes32 => Repository) public repositories;
+
+    modifier onlyFromProxy () {
+        if (msg.sender != proxy) {
+            throw;
+        }
+        _;
+    }
 
     struct Repository {
         address owner;
         bytes data;
     }
 
-    modifier killSwitch() {
-        if (killSwitchStatus) {
-            throw;
-        }
-        _;
-    }
-
-    function toggleKillSwitch() {
-        killSwitchStatus = !killSwitchStatus;
-    }
-
-    function EtherGit() {
+    function EtherGit(address _proxy) {
         creator = msg.sender;
+        proxy = _proxy;
     }
 
-    function createRepository(bytes32 name, bytes data) killSwitch() {
+    function createRepository(bytes32 name, bytes data) onlyFromProxy() {
         repositories[name] = Repository(msg.sender, data);
     }
 }
