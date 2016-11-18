@@ -47,6 +47,13 @@ class VersionControl extends Component {
 
     render () {
         return <div>
+            <button
+                onClick={evt => {
+                    evt.preventDefault();
+                    this.getVersion();
+                }}>
+                Test
+            </button>
             <input value={this.state.version}
                 onChange={evt => {
                     evt.preventDefault();
@@ -72,22 +79,7 @@ class VersionControl extends Component {
     }
 }
 
-class App extends Component {
-    render () {
-        return <div>
-            <button
-                onClick={evt => {
-                    evt.preventDefault();
-                    console.log(web3);
-                }}>
-                Test
-            </button>
-            <VersionControl/>
-        </div>;
-    }
-}
-
 render(
-    <App/>,
+    <VersionControl/>,
     document.getElementById('anchor')
 );
