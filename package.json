@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "bin": {
-      "git-remote-ether": "./gitremote/git-remote-ether.js"
+    "git-remote-ether": "./gitremote/git-remote-ether.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -39,10 +39,13 @@
     "webpack-init": "^0.1.2"
   },
   "dependencies": {
+    "pull-git-remote-helper": "^1.4.4",
+    "pull-stream": "^3.5.0",
     "react": "^15.4.0",
     "react-dom": "^15.4.0",
     "react-redux": "^4.4.6",
     "redux-thunk": "^2.1.0",
+    "stream-to-pull-stream": "^1.7.2",
     "web3": "^0.17.0-beta"
   }
 }
