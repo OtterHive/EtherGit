@@ -46,6 +46,6 @@
     "react-redux": "^4.4.6",
     "redux-thunk": "^2.1.0",
     "stream-to-pull-stream": "^1.7.2",
-    "web3": "^0.17.0-beta"
+    "web3": "git+ssh://git@github.com/axic/web3.js.git"
   }
 }

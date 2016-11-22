@@ -23,7 +23,7 @@ if (args.length < 2) {
 
 var repo = url.parse(args[1]);
 
-if (repo.protocol !== 'mango:') {
+if (repo.protocol !== 'ether:') {
     die('Invalid protocol');
 }
 
