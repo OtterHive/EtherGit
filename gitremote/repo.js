@@ -23,14 +23,22 @@ class Repo {
     }
 
     refs (prefix) {
-        this.repoContract.CreateRef({
+        let refs = [];
+        let event = this.repoContract.CreateRef({
             refname: RegExp('^' + prefix)
         });
-        return function* next (abort, cb) {
-            while (true) {
-                if (abort) {
-                    yield cb(true);
-                }
+        event.watch((err, result) => {
+            if (!err) {
+                refs.push(result);
+            }
+        });
+        return (abort, cb) => {
+            if (abort) {
+                event.stopWatching();
+                cb(true);
+            } else if (refs.length > 0) {
+                let { refname: name, hash } = refs.pop();
+                cb(null, { name, hash });
             }
         };
     }
