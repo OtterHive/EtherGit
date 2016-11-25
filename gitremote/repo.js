@@ -65,6 +65,13 @@ class Repo {
             }
         };
     }
+
+    update (readRefUpdates, readObjects, cb) {
+        if (readRefUpdates) {
+            readRefUpdates(null, (abort, { name, old, new: newVal }) => {
+            });
+        }
+    }
 }
 
 module.exports = Repo;
