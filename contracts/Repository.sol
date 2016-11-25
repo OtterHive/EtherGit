@@ -32,6 +32,7 @@ contract Repository {
     }
 
     function createRef (bytes32 refname, string hash) neverMaster(refname) onlyNew(refname) {
+        CreateRef(refname, hash, msg.sender);
         refs[refname] = Ref(msg.sender, hash);
     }
 
