@@ -1,0 +1,6 @@
+alias mimetype="file -b --mime-type"
+export GETH_DIR=~/go-ethereum
+export GETH=$GETH_DIR/geth
+export SWARM_DIR=~/bzz
+export SWARM_NETWORK_ID=322
+alias swarm='bash $GETH_DIR/swarm/cmd/swarm/swarm.sh $SWARM_DIR $SWARM_NETWORK_ID'
