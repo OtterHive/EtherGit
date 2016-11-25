@@ -1,9 +1,16 @@
-/* global require, module */
+/* global require, module, __dirname */
 const process = require('process');
 const crypto = require('crypto');
 const Web3 = require('web3');
+const solc = require('solc');
+const path = require('path');
+const fs = require('fs');
 
-const repoABI = require('../contracts/Repository.json');
+const repoABI = solc.compile(
+    fs.readFileSync(
+        path.join(__dirname, '..', 'contracts', 'Repository.sol')
+    )
+);
 
 function gitHash (obj, data) {
     let hasher = crypto.createHash('sha1');
