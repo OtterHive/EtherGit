@@ -21,6 +21,19 @@ class Repo {
         this.web3.eth.defaultAccount = user || this.web3.eth.coinbase;
         this.repoContract = this.web3.eth.contract(repoABI).at(address);
     }
+
+    refs (prefix) {
+        this.repoContract.CreateRef({
+            refname: RegExp('^' + prefix)
+        });
+        return function* next (abort, cb) {
+            while (true) {
+                if (abort) {
+                    yield cb(true);
+                }
+            }
+        };
+    }
 }
 
 module.exports = Repo;

@@ -1,32 +1,17 @@
-pragma solidity ^0.4.0;
+pragma solidity ^0.4.6;
 
 contract Repository {
-    address public creator;
+    mapping (bytes32 => string) refs;
 
-    uint public pointsIssued;
-    mapping (address => uint) public points;
-
-    mapping (address => bool) public collaborators;
-    mapping (address => bool) public admins;
-
-    enum ObjectType { Tree, Blob, Commit }
-    struct {
-        ObjectType type;
-    }
-    mapping (bytes32 => bytes) public refs;
-    mapping (bytes32 => GitObject) public objects;
-
-    modifier isCollaborator() {
-        if (!collaborators[msg.sender]) {
-            throw;
-        }
-        _;
+    function createRef (bytes32 refname, string hash) {
+        refs[refname] = hash;
     }
 
-    modifier isAdmin() {
-        if (!admins[msg.sender]) {
-            throw;
-        }
-        _;
+    function updateRef (bytes32 refname, string hash) {
+        refs[refname] = hash;
+    }
+
+    function deleteRef (bytes32 refname) {
+        delete refs[refname];
     }
 }
