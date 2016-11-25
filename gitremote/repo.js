@@ -66,12 +66,19 @@ class Repo {
         };
     }
 
-    update (readRefUpdates, readObjects, cb) {
-        if (readRefUpdates) {
-            readRefUpdates(null, (abort, { name, old, new: newVal }) => {
-            });
-        }
-    }
+    // update (readRefUpdates, readObjects, cb) {
+    //     if (readRefUpdates) {
+    //         readRefUpdates(null, (abort, { name, new: newVal }) => {
+    //             this.repoContract.updateRef(name, newVal, err => {
+    //                 if (!err && abort) {
+    //                     cb();
+    //                 } else if (err) {
+    //                     cb(true);
+    //                 }
+    //             });
+    //         });
+    //     }
+    // }
 }
 
 module.exports = Repo;
