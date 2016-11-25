@@ -37,8 +37,27 @@ class Repo {
                 event.stopWatching();
                 cb(true);
             } else if (refs.length > 0) {
-                let { refname: name, hash } = refs.pop();
+                let { name, hash } = refs.pop();
                 cb(null, { name, hash });
+            }
+        };
+    }
+
+    symrefs () {
+        let symrefs = [];
+        let event = this.repoContract.CreateSymRef();
+        event.watch((err, result) => {
+            if (!err) {
+                symrefs.push(result);
+            }
+        });
+        return (abort, cb) => {
+            if (abort) {
+                event.stopWatch();
+                cb(true);
+            } else if (symrefs.length > 0) {
+                let { name, ref } = symrefs.pop();
+                cb(null, { name, ref });
             }
         };
     }
