@@ -1,16 +1,9 @@
-/* global require, module, __dirname */
+/* global require, module */
 const process = require('process');
 const crypto = require('crypto');
 const Web3 = require('web3');
-const solc = require('solc');
-const path = require('path');
-const fs = require('fs');
 
-const repoABI = solc.compile(
-    fs.readFileSync(
-        path.join(__dirname, '..', 'contracts', 'Repository.sol')
-    )
-);
+const repoABI = require('../contracts/Repository.json');
 
 function gitHash (obj, data) {
     let hasher = crypto.createHash('sha1');
@@ -46,6 +39,8 @@ class Repo {
             } else if (refs.length > 0) {
                 let { name, hash } = refs.pop();
                 cb(null, { name, hash });
+            } else {
+                cb(true);
             }
         };
     }
@@ -65,6 +60,8 @@ class Repo {
             } else if (symrefs.length > 0) {
                 let { name, ref } = symrefs.pop();
                 cb(null, { name, ref });
+            } else {
+                cb(true);
             }
         };
     }
