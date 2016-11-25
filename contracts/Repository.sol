@@ -3,6 +3,8 @@ pragma solidity ^0.4.6;
 contract Repository {
     mapping (bytes32 => Ref) refs;
 
+    event CreateRef (bytes32 refname, string hash, address owner);
+
     struct Ref {
         address owner;
         string hash;
