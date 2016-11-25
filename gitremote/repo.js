@@ -53,7 +53,7 @@ class Repo {
         });
         return (abort, cb) => {
             if (abort) {
-                event.stopWatch();
+                event.stopWatching();
                 cb(true);
             } else if (symrefs.length > 0) {
                 let { name, ref } = symrefs.pop();
