@@ -4,7 +4,7 @@ RUN apt-get upgrade -y
 RUN apt-get install -y software-properties-common
 RUN add-apt-repository -y ppa:ethereum/ethereum
 RUN add-apt-repository -y ppa:ethereum/ethereum-dev
-RUN apt-get install -y build-essential golang libgmp32-dev git
+RUN apt-get install -y build-essential golang libgmp-dev git
 COPY ./bash_aliases ~/.bash_aliases
 RUN export GOPATH=~/go
 RUN export PATH=$GOPATH/bin:$PATH
