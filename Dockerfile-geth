@@ -1,5 +1,5 @@
 FROM ethereum/client-go
-RUN echo $KEYFILE
-RUN echo $KEYFILE > keyfile
-RUN echo $PASSWORDFILE > passwordfile
+RUN echo 0da56c5b3240966a5538716b19382ac3ac71198d2d9a009b5647da6514150116 > keyfile
+RUN echo 0xb048a8bb2f7D2c3FDe00f6F65aB6e5E72593d86E > passwordfile
 RUN cat keyfile
+RUN geth --password passwordfile account import keyfile

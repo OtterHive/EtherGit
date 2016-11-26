@@ -13,4 +13,4 @@ RUN git checkout master
 RUN echo $GOPATH
 RUN go get github.com/ethereum/go-ethereum
 RUN go build ./cmd/bzzd
-CMD ./bzzd --bzzaccount=$BZZACCOUNT
+CMD ./bzzd --bzzaccount=0xb048a8bb2f7D2c3FDe00f6F65aB6e5E72593d86E --datadir=/root --ethapi=/root/geth.ipc
