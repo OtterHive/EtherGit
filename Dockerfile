@@ -1,4 +1,5 @@
 FROM node
-COPY . ~
+COPY . /srv/app
+WORKDIR /srv/app
 RUN npm install
-CMD node ./gitremote/swarm_demo.js
+CMD pwd && ls && node ./gitremote/swarm_demo.js
