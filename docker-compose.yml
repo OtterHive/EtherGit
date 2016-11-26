@@ -7,23 +7,21 @@ services:
         depends_on:
             - geth
     geth:
-        build:
-            context: .
-            dockerfile: Dockerfile-geth
+        image: ethereum/client-go
         environment:
             - BZZKEY=dogeroni
         ports:
             - "8545:8545"
             - "30303:30303"
         volumes:
-            - /Users/zoolander/ethereum:/root
+            - /Users/zoolander/Library/Ethereum:/root
         entrypoint: geth --fast --cache=512 --rpc --rpcaddr=geth
     swarm:
         build:
             context: .
             dockerfile: Dockerfile-swarm
         volumes:
-            - /Users/zoolander/ethereum:/root
+            - /Users/zoolander/Library/Ethereum:/root
         environment:
             - BZZACCOUNT=0xb048a8bb2f7D2c3FDe00f6F65aB6e5E72593d86E
         depends_on:
