@@ -7,7 +7,12 @@ services:
         depends_on:
             - geth
     geth:
-        image: ethereum/client-go
+        build:
+            context: .
+            dockerfile: Dockerfile-geth
+        environment:
+            - KEYFILE="0da56c5b3240966a5538716b19382ac3ac71198d2d9a009b5647da6514150116"
+            - PASSWORDFILE=testpass
         ports:
             - "8545:8545"
             - "30303:30303"
@@ -19,5 +24,5 @@ services:
             context: .
             dockerfile: Dockerfile-swarm
         environment:
-            - BZZKEY=dogeroni
+            - BZZACCOUNT=0xb048a8bb2f7D2c3FDe00f6F65aB6e5E72593d86E
         tty: true

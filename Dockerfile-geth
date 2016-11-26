@@ -1,0 +1,5 @@
+FROM ethereum/client-go
+RUN echo $KEYFILE
+RUN echo $KEYFILE > keyfile
+RUN echo $PASSWORDFILE > passwordfile
+RUN cat keyfile

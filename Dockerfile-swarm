@@ -13,4 +13,4 @@ RUN git checkout master
 RUN echo $GOPATH
 RUN go get github.com/ethereum/go-ethereum
 RUN go build ./cmd/bzzd
-CMD ./bzzd --bzzaccount=$BZZKEY
+CMD ./bzzd --bzzaccount=$BZZACCOUNT
