@@ -29,22 +29,34 @@ var swarmGet = function (key, cb) {
     })
 }
 
-for (var i = 0; i < 1000; i++) {
-    console.log(web3.eth.coinbase);
-}
+new Promise((resolve, reject) => {
+    function checkIsUp () {
+        web3.version.getNode((err, result) => {
+            if (!err) {
+                resolve(result);
+            } else {
+                setTimeout(() => {
+                    checkIsUp();
+                }, 2000);
+            }
+        });
+    }
 
-// swarmPut('Hello World', 'application/text', function (err, ret) {
-//     if (err) {
-//         console.log('Swarm put failed: ', err)
-//         return
-//     }
-//     console.log('Added to swarm: ', ret)
-//
-//     swarmGet(ret, function (err, ret) {
-//         if (err) {
-//             console.log('Swarm get failed: ', err)
-//             return
-//         }
-//         console.log('Retrieved from swarm: ', ret)
-//     })
-// });
+    checkIsUp();
+}).then(() => {
+    swarmPut('Hello World', 'application/text', function (err, ret) {
+        if (err) {
+            console.log('Swarm put failed: ', err)
+            return
+        }
+        console.log('Added to swarm: ', ret)
+
+        swarmGet(ret, function (err, ret) {
+            if (err) {
+                console.log('Swarm get failed: ', err)
+                return
+            }
+            console.log('Retrieved from swarm: ', ret)
+        })
+    });
+});

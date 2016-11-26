@@ -11,3 +11,13 @@ services:
         ports:
             - "8545:8545"
             - "30303:30303"
+        volumes:
+            - /Users/zoolander/ethereum:/root
+        entrypoint: geth --fast --cache=512 --rpc --rpcaddr=geth
+    swarm:
+        build:
+            context: .
+            dockerfile: Dockerfile-swarm
+        environment:
+            - BZZKEY=dogeroni
+        tty: true
