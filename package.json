@@ -47,6 +47,6 @@
     "redux-thunk": "^2.1.0",
     "solc": "^0.4.4",
     "stream-to-pull-stream": "^1.7.2",
-    "web3": "git+ssh://git@github.com/axic/web3.js.git#swarm"
+    "web3": "git+https://github.com/axic/web3.js.git#swarm"
   }
 }

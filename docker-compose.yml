@@ -4,5 +4,10 @@ services:
         build: .
         ports:
             - "80:3000"
+        depends_on:
+            - geth
     geth:
-        image: ethereum/client-go#swarm
+        image: ethereum/client-go
+        ports:
+            - "8545:8545"
+            - "30303:30303"
