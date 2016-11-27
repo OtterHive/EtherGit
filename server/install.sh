@@ -13,7 +13,7 @@ mkdir -p $GOPATH/src/github.com/ethereum
 cd $GOPATH/src/github.com/ethereum
 git clone https://github.com/ethereum/go-ethereum
 cd go-ethereum
-git checkout master
+git checkout swarm
 go get github.com/ethereum/go-ethereum
 
 # compile executables
