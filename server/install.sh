@@ -1,7 +1,7 @@
 # From https://swarm-guide.readthedocs.io/en/latest/installation.html
 
 # install prerequisites
-apt install golang git
+apt install -y golang git
 
 # prepare environment
 mkdir ~/go
@@ -23,7 +23,7 @@ go build ./cmd/bzzup
 go build ./cmd/bzzhash
 
 # symlink executables
-ln -s /usr/bin/bzzd ./bzzd
-ln -s /usr/bin/geth ./geth
-ln -s /usr/bin/bzzup ./bzzup
-ln -s /usr/bin/bzzhash ./bzzhash
+ln -s $(pwd)/bzzd /usr/bin/bzzd
+ln -s $(pwd)/geth /usr/bin/geth
+ln -s $(pwd)/bzzup /usr/bin/bzzup
+ln -s $(pwd)/bzzhash /usr/bin/bzzhash
