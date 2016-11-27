@@ -1,4 +1,4 @@
 cd $GOPATH/src/github.com/ethereum/go-ethereum
-git checkout swarm
+git checkout master
 git pull
-go build $(pwd)/cmd/geth $(pwd)/cmd/bzzd $(pwd)/cmd/bzzup $(pwd)/cmd/bzzhash
+go build ./cmd/geth ./cmd/bzzd ./cmd/bzzup ./cmd/bzzhash
