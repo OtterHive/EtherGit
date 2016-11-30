@@ -7,7 +7,7 @@
     "git-remote-ether": "./gitremote/git-remote-ether.js"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node ./tests/tests.js",
     "clean": "rm -rf ./dist",
     "build": "npm run clean && webpack",
     "dev": "webpack-dev-server"
@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/OtterHive/EtherGit#readme",
   "devDependencies": {
+    "abstract-pull-git-repo": "^0.4.1",
     "babel-core": "^6.18.2",
     "babel-loader": "^6.2.7",
     "babel-plugin-transform-object-rest-spread": "^6.19.0",
@@ -34,11 +35,13 @@
     "node-sass": "^3.13.0",
     "postcss-loader": "^1.1.1",
     "sass-loader": "^4.0.2",
+    "tape": "^4.6.3",
     "url-loader": "^0.5.7",
     "webpack-dev-server": "^1.16.2",
     "webpack-init": "^0.1.2"
   },
   "dependencies": {
+    "abstract-pull-git-repo": "^0.4.1",
     "pull-git-remote-helper": "^1.4.4",
     "pull-stream": "^3.5.0",
     "react": "^15.4.0",
