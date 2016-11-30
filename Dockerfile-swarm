@@ -15,4 +15,7 @@ RUN go get github.com/ethereum/go-ethereum
 RUN go build ./cmd/bzzd
 RUN go build ./cmd/geth
 RUN ./geth account list
-CMD ./bzzd --bzzaccount=0xb048a8bb2f7D2c3FDe00f6F65aB6e5E72593d86E --datadir=/root --ethapi=/root/geth.ipc
+RUN touch password
+RUN echo -n password > ./password
+RUN cat ./password
+CMD echo $PASSWORD | ./bzzd --bzzaccount=$BZZACCOUNT
