@@ -1,7 +1,7 @@
 pragma solidity ^0.4.6;
 
 contract Repository {
-    mapping (bytes32 => Ref) refs;
+    mapping (bytes32 => Ref) public refs;
 
     uint public refCount;
     uint public symrefCount;
@@ -46,6 +46,10 @@ contract Repository {
         refCount += 1;
         CreateRef(refname, gitHash, bzzHash, msg.sender);
         refs[refname] = Ref(msg.sender, gitHash, bzzHash);
+    }
+
+    function getRef (bytes32 refname) returns (string, string, address) {
+        return (refs[refname].gitHash, refs[refname].bzzHash, refs[refname].owner);
     }
 
     function updateRef (bytes32 refname, string hash) neverMaster(refname) onlyOwner(refname) {

@@ -49,7 +49,7 @@ class Repo {
         let event = this.repoContract.CreateSymRef();
         event.watch((err, result) => {
             if (!err) {
-                symrefs.push(result);
+                symrefs.push(String(this.repoContract.refs(result)));
                 symrefCount--;
             }
         });

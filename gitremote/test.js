@@ -9,6 +9,7 @@ const web3 = new Web3(
     new Web3.providers.HttpProvider(providerAddress)
 );
 
+console.log(process.argv[2]);
 const repoContract = web3.eth.contract(repoABI).at(process.argv[2]);
 repoContract.refCount((err, result) => {
     if (!err) {
