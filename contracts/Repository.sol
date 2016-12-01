@@ -4,6 +4,7 @@ contract Repository {
     mapping (bytes32 => Ref) refs;
 
     uint public refCount;
+    uint public symrefCount;
     event CreateRef (bytes32 refname, string hash, address owner);
     event UpdateRef (bytes32 refname, string hash, address owner);
     event DeleteRef (bytes32 refname, string hash, address owner);
@@ -37,6 +38,7 @@ contract Repository {
 
     function Repository () {
         refCount = 0;
+        symrefCount = 0;
     }
 
     function createRef (bytes32 refname, string hash) neverMaster(refname) onlyNew(refname) {
