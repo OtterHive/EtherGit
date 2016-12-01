@@ -5,14 +5,15 @@ contract Repository {
 
     uint public refCount;
     uint public symrefCount;
-    event CreateRef (bytes32 refname, string hash, address owner);
-    event UpdateRef (bytes32 refname, string hash, address owner);
-    event DeleteRef (bytes32 refname, string hash, address owner);
+    event CreateRef (bytes32 refname, string gitHash, string bzzHash, address owner);
+    event UpdateRef (bytes32 refname, string gitHash, string bzzHash, address owner);
+    event DeleteRef (bytes32 refname, string gitHash, string bzzHash, address owner);
     event CreateSymRef();
 
     struct Ref {
         address owner;
-        string hash;
+        string gitHash;
+        string bzzHash;
     }
 
     modifier onlyNew (bytes32 refname) {
@@ -41,14 +42,14 @@ contract Repository {
         symrefCount = 0;
     }
 
-    function createRef (bytes32 refname, string hash) neverMaster(refname) onlyNew(refname) {
+    function createRef (bytes32 refname, string gitHash, string bzzHash) neverMaster(refname) onlyNew(refname) {
         refCount += 1;
-        CreateRef(refname, hash, msg.sender);
-        refs[refname] = Ref(msg.sender, hash);
+        CreateRef(refname, gitHash, bzzHash, msg.sender);
+        refs[refname] = Ref(msg.sender, gitHash, bzzHash);
     }
 
     function updateRef (bytes32 refname, string hash) neverMaster(refname) onlyOwner(refname) {
-        refs[refname].hash = hash;
+        refs[refname].gitHash = hash;
     }
 
     function deleteRef (bytes32 refname) neverMaster(refname) onlyOwner(refname) {
