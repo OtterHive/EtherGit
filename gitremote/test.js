@@ -9,10 +9,12 @@ const web3 = new Web3(
     new Web3.providers.HttpProvider(providerAddress)
 );
 
-console.log(process.argv[2]);
-const repoContract = web3.eth.contract(repoABI).at(process.argv[2]);
+let address = String(process.argv[2]).replace(/[^0-9xa-fA-F]/, '');
+console.log(address);
+const repoContract = web3.eth.contract(repoABI).at(address);
 repoContract.refCount((err, result) => {
     if (!err) {
         console.log(Number(result));
     }
 });
+console.log(repoContract.getRef('doge'));
