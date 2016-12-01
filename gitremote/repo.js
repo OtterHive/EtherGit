@@ -22,46 +22,44 @@ class Repo {
         this.repoContract = this.web3.eth.contract(repoABI).at(address);
     }
 
-    refs (prefix) {
+    refs () {
+        let refCount = Number(this.repoContract.refCount());
         let refs = [];
-        let event = this.repoContract.CreateRef({
-            refname: RegExp('^' + prefix)
-        });
+        let event = this.repoContract.CreateRef();
         event.watch((err, result) => {
             if (!err) {
                 refs.push(result);
+                refCount--;
             }
         });
         return (abort, cb) => {
-            if (abort) {
+            if (abort || refCount <= 0) {
                 event.stopWatching();
                 cb(true);
             } else if (refs.length > 0) {
                 let { name, hash } = refs.pop();
                 cb(null, { name, hash });
-            } else {
-                cb(true);
             }
         };
     }
 
     symrefs () {
+        let symrefCount = Number(this.repoContract.symrefCount());
         let symrefs = [];
         let event = this.repoContract.CreateSymRef();
         event.watch((err, result) => {
             if (!err) {
                 symrefs.push(result);
+                symrefCount--;
             }
         });
         return (abort, cb) => {
-            if (abort) {
+            if (abort || symrefCount <= 0) {
                 event.stopWatching();
                 cb(true);
             } else if (symrefs.length > 0) {
                 let { name, ref } = symrefs.pop();
                 cb(null, { name, ref });
-            } else {
-                cb(true);
             }
         };
     }
