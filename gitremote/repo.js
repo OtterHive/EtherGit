@@ -64,22 +64,28 @@ class Repo {
                 }
             });
 
+            let readRef = cb => {
+                if (allRefs.length > 0) {
+                    cb(null, allRefs.pop());
+                } else {
+                    evt.stopWatching();
+                    cb(true);
+                }
+            };
+
             return (abort, cb) => {
                 if (abort) {
                     evt.stopWatching();
                     cb(true);
                 } else if (allRefs) {
-                    evt.stopWatching();
-                    cb(true);
+                    readRef(cb);
+                } else {
+                    pendingCallback = () => {
+                        readRef(cb);
+                    };
                 }
             };
         })();
-    }
-
-    refs () {
-        return (abort, cb) => {
-            cb(true);
-        };
     }
 
     symrefs () {
