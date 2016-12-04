@@ -24,6 +24,11 @@ class Repo {
 
     refs () {
         let transactionsLeft = Number(this.repoContract.transactionCount());
+        if (transactionsLeft === 0) {
+            return (abort, cb) => {
+                cb(true);
+            };
+        }
         let evt;
         let refs = new Promise((resolve) => {
             let refObject = {};
@@ -45,6 +50,7 @@ class Repo {
                     break;
                 }
                 if (transactionsLeft == 0) {
+                    evt.stopWatching();
                     resolve(refObject);
                 }
             });
@@ -68,14 +74,12 @@ class Repo {
                 if (allRefs.length > 0) {
                     cb(null, allRefs.pop());
                 } else {
-                    evt.stopWatching();
                     cb(true);
                 }
             };
 
             return (abort, cb) => {
                 if (abort) {
-                    evt.stopWatching();
                     cb(true);
                 } else if (allRefs) {
                     readRef(cb);
