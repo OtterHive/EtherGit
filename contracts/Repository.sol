@@ -3,7 +3,7 @@ pragma solidity ^0.4.6;
 contract Repository {
     uint public transactionCount = 0;
     mapping (bytes32 => Ref) public refs;
-    mapping (bytes32 => string) objects;
+    mapping (bytes32 => GitObject) public objects;
 
     event CreateRef (bytes32 refname, string hash, address owner);
     event UpdateRef (bytes32 refname, string hash, address owner);
@@ -12,6 +12,12 @@ contract Repository {
     struct Ref {
         address owner;
         string hash;
+    }
+
+    enum ObjectType { tag, commit, tree, blob }
+    struct GitObject {
+        ObjectType objectType;
+        string bzzHash;
     }
 
     modifier onlyNew (bytes32 refname) {
@@ -53,5 +59,9 @@ contract Repository {
     function deleteRef (bytes32 refname) transaction() neverMaster(refname) onlyOwner(refname) {
         DeleteRef(refname, refs[refname].owner);
         delete refs[refname];
+    }
+
+    function createObject (bytes32 gitHash, string bzzHash, ObjectType objectType) {
+        objects[gitHash] = GitObject(objectType, bzzHash);
     }
 }

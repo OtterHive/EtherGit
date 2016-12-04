@@ -2,6 +2,7 @@
 const process = require('process');
 const crypto = require('crypto');
 const Web3 = require('web3');
+//const request = require('superagent');
 
 const repoABI = require('../contracts/Repository.json');
 
@@ -11,6 +12,8 @@ function gitHash (obj, data) {
     hasher.update(data);
     return hasher.digest('hex');
 }
+
+//const ObjectTypes = ['tag', 'commit', 'tree', 'blob'];
 
 class Repo {
     constructor (address, user) {
@@ -107,6 +110,39 @@ class Repo {
             }
         };
     }
+
+    // hasObject (hash, cb) {
+    //     this.repoContract.objects(hash, (err, result) => {
+    //         cb(err, result.length > 0);
+    //     });
+    // }
+    //
+    // getObject (hash, cb) {
+    //     this.repoContract.object(hash, (err, result) => {
+    //         if (err) {
+    //             cb(err);
+    //         } else {
+    //             request.get('http://localhost:8500/bzzr:/' + result[1]).end((err, res) => {
+    //                 if (err) {
+    //                     cb(err);
+    //                 } else {
+    //                     let { length } = res.body;
+    //                     cb(null, {
+    //                         length,
+    //                         type: ObjectTypes[Number(result[0])],
+    //                         read: (abort, cb) => {
+    //                             if (abort) {
+    //                                 cb(true);
+    //                             } else {
+    //                                 cb(true, res.body);
+    //                             }
+    //                         }
+    //                     });
+    //                 }
+    //             });
+    //         }
+    //     });
+    // }
 }
 
 module.exports = Repo;
