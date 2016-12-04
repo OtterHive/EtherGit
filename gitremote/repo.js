@@ -24,11 +24,10 @@ class Repo {
 
     refs () {
         let transactionsLeft = Number(this.repoContract.transactionCount());
-        let refs;
-        new Promise((resolve) => {
+        let evt;
+        let refs = new Promise((resolve) => {
             let refObject = {};
-            this.repoContract.allEvents({ fromBlock: 0, toBlock: 'pending' }, (err, result) => {
-                process.stderr.write('event\n');
+            evt = this.repoContract.allEvents({ fromBlock: 0, toBlock: 'latest' }, (err, result) => {
                 let { refname, hash } = result.args;
                 refname = this.web3.toAscii(refname.replace(/0*$/, ''));
                 switch (result.event) {
@@ -49,29 +48,53 @@ class Repo {
                     resolve(refObject);
                 }
             });
-        }).then(refObject => {
-            process.stderr.write(JSON.stringify(refObject));
-            refs = Object.keys(refObject).map(name => ({
-                name,
-                hash: refObject[name]
-            }));
         });
 
+        return (() => {
+            let pendingCallback;
+            let allRefs;
+
+            refs.then(refObject => {
+                allRefs = Object.keys(refObject).map(name => ({
+                    name,
+                    hash: refObject[name]
+                }));
+                if (pendingCallback) {
+                    pendingCallback();
+                }
+            });
+
+            return (abort, cb) => {
+                if (abort) {
+                    evt.stopWatching();
+                    cb(true);
+                } else if (allRefs) {
+                    evt.stopWatching();
+                    cb(true);
+                }
+            };
+        })();
+    }
+
+    refs () {
         return (abort, cb) => {
-            process.stderr.write('testing\n');
-            if (abort) {
-                cb(true);
-            } else if (!!refs && refs.length > 0) {
-                cb(null, refs.pop());
-            } else {
-                cb(null, null);
-            }
+            cb(true);
         };
     }
 
     symrefs () {
+        let symrefs = [{
+            name: 'HEAD',
+            ref: 'refs/heads/master'
+        }];
         return (abort, cb) => {
-            cb(true);
+            if (abort) {
+                cb(true);
+            } else if (symrefs.length > 0) {
+                cb(null, symrefs.pop());
+            } else {
+                cb(true, null);
+            }
         };
     }
 }
