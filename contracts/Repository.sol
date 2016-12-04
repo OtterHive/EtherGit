@@ -1,19 +1,17 @@
 pragma solidity ^0.4.6;
 
 contract Repository {
+    uint public transactionCount = 0;
     mapping (bytes32 => Ref) public refs;
+    mapping (bytes32 => string) objects;
 
-    uint public refCount;
-    uint public symrefCount;
-    event CreateRef (bytes32 refname, string gitHash, string bzzHash, address owner);
-    event UpdateRef (bytes32 refname, string gitHash, string bzzHash, address owner);
-    event DeleteRef (bytes32 refname, string gitHash, string bzzHash, address owner);
-    event CreateSymRef();
+    event CreateRef (bytes32 refname, string hash, address owner);
+    event UpdateRef (bytes32 refname, string hash, address owner);
+    event DeleteRef (bytes32 refname, address owner);
 
     struct Ref {
         address owner;
-        string gitHash;
-        string bzzHash;
+        string hash;
     }
 
     modifier onlyNew (bytes32 refname) {
@@ -37,27 +35,23 @@ contract Repository {
         _;
     }
 
-    function Repository () {
-        refCount = 0;
-        symrefCount = 0;
+    modifier transaction () {
+        transactionCount++;
+        _;
     }
 
-    function createRef (bytes32 refname, string gitHash, string bzzHash) neverMaster(refname) onlyNew(refname) {
-        refCount += 1;
-        CreateRef(refname, gitHash, bzzHash, msg.sender);
-        refs[refname] = Ref(msg.sender, gitHash, bzzHash);
+    function createRef (bytes32 refname, string hash) transaction() neverMaster(refname) onlyNew(refname) {
+        CreateRef(refname, hash, msg.sender);
+        refs[refname] = Ref(msg.sender, hash);
     }
 
-    function getRef (bytes32 refname) returns (string, string, address) {
-        return (refs[refname].gitHash, refs[refname].bzzHash, refs[refname].owner);
+    function updateRef (bytes32 refname, string hash) transaction() neverMaster(refname) onlyOwner(refname) {
+        UpdateRef(refname, hash, refs[refname].owner);
+        refs[refname].hash = hash;
     }
 
-    function updateRef (bytes32 refname, string hash) neverMaster(refname) onlyOwner(refname) {
-        refs[refname].gitHash = hash;
-    }
-
-    function deleteRef (bytes32 refname) neverMaster(refname) onlyOwner(refname) {
-        refCount -= 1;
+    function deleteRef (bytes32 refname) transaction() neverMaster(refname) onlyOwner(refname) {
+        DeleteRef(refname, refs[refname].owner);
         delete refs[refname];
     }
 }

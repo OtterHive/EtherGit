@@ -23,60 +23,57 @@ class Repo {
     }
 
     refs () {
-        let refCount = Number(this.repoContract.refCount());
-        let refs = [];
-        let event = this.repoContract.CreateRef();
-        event.watch((err, result) => {
-            if (!err) {
-                refs.push(result);
-                refCount--;
-            }
+        let transactionsLeft = Number(this.repoContract.transactionCount());
+        let refs;
+        new Promise((resolve) => {
+            let refObject = {};
+            this.repoContract.allEvents({ fromBlock: 0, toBlock: 'pending' }, (err, result) => {
+                process.stderr.write('event\n');
+                let { refname, hash } = result.args;
+                refname = this.web3.toAscii(refname.replace(/0*$/, ''));
+                switch (result.event) {
+                case 'CreateRef':
+                    refObject[refname] = hash;
+                    transactionsLeft--;
+                    break;
+                case 'UpdateRef':
+                    refObject[refname] = hash;
+                    transactionsLeft--;
+                    break;
+                case 'DeleteRef':
+                    delete refObject[refname];
+                    transactionsLeft--;
+                    break;
+                }
+                if (transactionsLeft == 0) {
+                    resolve(refObject);
+                }
+            });
+        }).then(refObject => {
+            process.stderr.write(JSON.stringify(refObject));
+            refs = Object.keys(refObject).map(name => ({
+                name,
+                hash: refObject[name]
+            }));
         });
+
         return (abort, cb) => {
-            if (abort || refCount <= 0) {
-                event.stopWatching();
+            process.stderr.write('testing\n');
+            if (abort) {
                 cb(true);
-            } else if (refs.length > 0) {
-                let { name, hash } = refs.pop();
-                cb(null, { name, hash });
+            } else if (!!refs && refs.length > 0) {
+                cb(null, refs.pop());
+            } else {
+                cb(null, null);
             }
         };
     }
 
     symrefs () {
-        let symrefCount = Number(this.repoContract.symrefCount());
-        let symrefs = [];
-        let event = this.repoContract.CreateSymRef();
-        event.watch((err, result) => {
-            if (!err) {
-                symrefs.push(String(this.repoContract.refs(result)));
-                symrefCount--;
-            }
-        });
         return (abort, cb) => {
-            if (abort || symrefCount <= 0) {
-                event.stopWatching();
-                cb(true);
-            } else if (symrefs.length > 0) {
-                let { name, ref } = symrefs.pop();
-                cb(null, { name, ref });
-            }
+            cb(true);
         };
     }
-
-    // update (readRefUpdates, readObjects, cb) {
-    //     if (readRefUpdates) {
-    //         readRefUpdates(null, (abort, { name, new: newVal }) => {
-    //             this.repoContract.updateRef(name, newVal, err => {
-    //                 if (!err && abort) {
-    //                     cb();
-    //                 } else if (err) {
-    //                     cb(true);
-    //                 }
-    //             });
-    //         });
-    //     }
-    // }
 }
 
 module.exports = Repo;
