@@ -1,8 +1,9 @@
 /* global require, module */
+const request = require('superagent');
+const pull = require('pull-stream');
 const process = require('process');
 const crypto = require('crypto');
 const Web3 = require('web3');
-const request = require('superagent');
 
 const repoABI = require('../contracts/Repository.json');
 
@@ -146,6 +147,20 @@ class Repo {
                 });
             }
         });
+    }
+
+    update (refs, objects, cb) {
+        if (refs) {
+            refs(null, (abort, { old, new: newVal, name }) => {
+                process.stderr.write(JSON.stringify({ old, newVal, name }));
+            });
+        }
+
+        if (objects) {
+            objects(null, (abort, { type, length, offset }) => {
+            });
+        }
+        cb(true);
     }
 }
 
