@@ -1,6 +1,10 @@
 /* global require */
 var test = require('tape');
 var tests = require('abstract-pull-git-repo/tests');
+var solc = require('solc');
+var fs = require('fs');
+
+var src = fs.readFileSync('./contracts/Repository.sol');
 
 const Repo = require('./repo.js');
 

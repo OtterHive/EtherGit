@@ -7,7 +7,7 @@
     "git-remote-ether": "./gitremote/git-remote-ether.js"
   },
   "scripts": {
-    "test": "node gitremote/test.js",
+    "test": "node gitremote/test.js | colortape",
     "clean": "rm -rf ./dist",
     "build": "npm run clean && webpack",
     "dev": "webpack-dev-server"
@@ -30,6 +30,7 @@
     "babel-preset-es2015": "^6.18.0",
     "babel-preset-latest": "^6.16.0",
     "babel-preset-react": "^6.16.0",
+    "colortape": "^0.1.2",
     "eslint": "^3.10.2",
     "eslint-plugin-react": "^6.7.1",
     "node-sass": "^3.13.0",
